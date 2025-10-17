@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PanelChecker</title>
+  <title>PanelChecker - Genomics Reference Data Curation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -14,352 +14,762 @@
   <header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
     <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-sky-500 text-white">
-          <i data-lucide="compass" class="h-5 w-5"></i>
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+          <i data-lucide="dna" class="h-5 w-5"></i>
         </span>
         <span class="text-lg font-semibold tracking-tight">PanelChecker</span>
       </div>
+      <div class="text-sm text-neutral-600">Genomics Reference Data Curation</div>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="mx-auto max-w-7xl px-6 pt-10 pb-8">
-    <div class="relative overflow-hidden rounded-2xl border border-neutral-200 bg-gradient-to-tr from-sky-400 via-sky-500 to-cyan-500">
-      <div class="absolute inset-0 opacity-20">
-        <img alt="Mountain landscape" class="h-full w-full object-cover"
-             src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2000&auto=format&fit=crop" />
-      </div>
-      <div class="relative grid gap-6 p-8 md:grid-cols-3 md:p-12">
-        <div class="md:col-span-2">
-          <h1 class="text-white text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
-            PanelChecker
-          </h1>
-          <p class="mt-3 text-sky-100/90 text-base md:text-lg">
-            Intelligent panel analysis and verification system powered by AI multi-agent architecture.
-          </p>
-          <div class="mt-6 flex flex-wrap items-center gap-3">
-            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
-              <i data-lucide="clock-8" class="h-4 w-4"></i>
-              Plan faster
-            </div>
-            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
-              <i data-lucide="map" class="h-4 w-4"></i>
-              Smarter routes
-            </div>
-            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
-              <i data-lucide="sparkles" class="h-4 w-4"></i>
-              Local gems
-            </div>
+  <section class="mx-auto max-w-7xl px-6 pt-8 pb-6">
+    <div class="relative overflow-hidden rounded-2xl border border-neutral-200 bg-gradient-to-tr from-blue-500 via-blue-600 to-indigo-600">
+      <div class="relative p-8 md:p-10">
+        <h1 class="text-white text-3xl md:text-4xl font-semibold tracking-tight leading-tight">
+          Panel Reference Data Validator
+        </h1>
+        <p class="mt-3 text-blue-100/90 text-base md:text-lg max-w-2xl">
+          Compare gene panel data across Ensembl versions to identify symbol changes, location shifts, and missing genes before updating reference data.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
+            <i data-lucide="check-circle" class="h-4 w-4"></i>
+            GRCh38 Standard
           </div>
-        </div>
-        <div class="hidden md:block">
-          <div class="relative h-full w-full rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur">
-            <img alt="City minimal render" class="h-full w-full rounded-lg object-cover"
-                 src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1600&auto=format&fit=crop" />
-            <div class="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-black/30 px-3 py-1.5 text-white text-xs">
-              <i data-lucide="camera" class="h-3.5 w-3.5"></i> Inspiration
-            </div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
+            <i data-lucide="database" class="h-4 w-4"></i>
+            PanelApp Integration
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Feature cards -->
-    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-3">
-          <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700">
-            <i data-lucide="search" class="h-5 w-5"></i>
-          </span>
-          <div>
-            <div class="font-semibold tracking-tight">Research</div>
-            <p class="text-sm text-neutral-600">Weather, highlights, neighborhoods.</p>
-          </div>
-        </div>
-      </div>
-      <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-3">
-          <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700">
-            <i data-lucide="calendar-clock" class="h-5 w-5"></i>
-          </span>
-          <div>
-            <div class="font-semibold tracking-tight">Itineraries</div>
-            <p class="text-sm text-neutral-600">Day-by-day schedules, in minutes.</p>
-          </div>
-        </div>
-      </div>
-      <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-3">
-          <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700">
-            <i data-lucide="wallet" class="h-5 w-5"></i>
-          </span>
-          <div>
-            <div class="font-semibold tracking-tight">Budget</div>
-            <p class="text-sm text-neutral-600">Smart spend suggestions.</p>
-          </div>
-        </div>
-      </div>
-      <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-3">
-          <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700">
-            <i data-lucide="map-pin" class="h-5 w-5"></i>
-          </span>
-          <div>
-            <div class="font-semibold tracking-tight">Local</div>
-            <p class="text-sm text-neutral-600">Authentic finds & hidden gems.</p>
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
+            <i data-lucide="git-compare" class="h-4 w-4"></i>
+            Version Comparison
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Planner -->
+  <!-- Main Content -->
   <main class="mx-auto max-w-7xl px-6 pb-20">
-    <div class="grid gap-6 lg:grid-cols-3">
+    
+    <!-- Selection View -->
+    <div id="selectionView" class="grid gap-6 lg:grid-cols-3">
       <!-- Form -->
-      <section class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <h2 class="text-2xl font-semibold tracking-tight">Panel Analysis</h2>
-        <p class="mt-1 text-sm text-neutral-600">Enter panel details for intelligent verification and analysis.</p>
+      <section class="lg:col-span-2 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+        <h2 class="text-2xl font-semibold tracking-tight">Configure Analysis</h2>
+        <p class="mt-1 text-sm text-neutral-600">Select a panel and Ensembl version to begin comparison</p>
 
-        <form id="plannerForm" class="mt-6 space-y-4" autocomplete="off">
-          <!-- Destination -->
+        <form id="analysisForm" class="mt-6 space-y-5" autocomplete="off">
+          <!-- Panel Dropdown (Searchable) -->
           <div>
-            <label for="destination" class="block text-sm font-medium text-neutral-800">Destination</label>
+            <label for="panelSelect" class="block text-sm font-medium text-neutral-800">Select Panel</label>
             <div class="mt-2 relative">
-              <input id="destination" type="text" required placeholder="e.g., Kyoto, Japan"
-                     class="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm outline-none ring-0 focus:border-neutral-400 focus:ring-2 focus:ring-neutral-200" />
+              <input id="panelSelect" type="text" placeholder="Type to search panels..."
+                     class="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm outline-none ring-0 focus:border-blue-400 focus:ring-2 focus:ring-blue-200"
+                     autocomplete="off" />
               <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
-                <i data-lucide="map-pin" class="h-4.5 w-4.5"></i>
+                <i data-lucide="chevron-down" class="h-4.5 w-4.5"></i>
               </span>
+              <!-- Dropdown List -->
+              <div id="panelDropdown" class="hidden absolute z-20 mt-2 w-full max-h-64 overflow-y-auto rounded-lg border border-neutral-200 bg-white shadow-lg">
+              <div class="p-4 text-center text-neutral-500">
+                <i data-lucide="loader-2" class="h-5 w-5 animate-spin mx-auto mb-2"></i>
+                <p class="text-sm">Loading panels...</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Duration -->
-          <div>
-            <label for="duration" class="block text-sm font-medium text-neutral-800">Duration (days)</label>
-            <div class="mt-2 relative">
-              <input id="duration" type="number" inputmode="numeric" min="1" max="30" step="1" required placeholder="e.g., 5"
-                     class="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm outline-none ring-0 focus:border-neutral-400 focus:ring-2 focus:ring-neutral-200" />
-              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
-                <i data-lucide="calendar" class="h-4.5 w-4.5"></i>
-              </span>
+          <!-- Selected Panel Info -->
+          <div id="selectedPanelInfo" class="hidden p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div class="flex items-center gap-2 text-blue-800 font-medium mb-1">
+              <i data-lucide="check-circle-2" class="h-4 w-4"></i>
+              <span>Selected Panel</span>
             </div>
+            <p id="selectedPanelName" class="text-sm text-blue-900 font-medium"></p>
+            <p id="selectedPanelDetails" class="text-xs text-blue-700 mt-1"></p>
           </div>
 
-          <!-- Budget (custom select) -->
-          <div class="relative">
-            <label class="block text-sm font-medium text-neutral-800">Budget</label>
-            <input id="budgetValue" type="hidden" value="moderate" />
-            <button id="budgetBtn" type="button"
-                    class="mt-2 w-full inline-flex items-center justify-between rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-left text-neutral-900 shadow-sm hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-200">
-              <span id="budgetLabel">Moderate</span>
-              <i data-lucide="chevron-down" class="h-4.5 w-4.5 text-neutral-500"></i>
-            </button>
-            <div id="budgetMenu" class="absolute z-20 mt-2 hidden w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-lg">
-              <button data-value="budget" class="flex w-full items-center justify-between px-3.5 py-2.5 text-sm hover:bg-neutral-50">
-                <span class="flex items-center gap-2">
-                  <i data-lucide="piggy-bank" class="h-4 w-4 text-neutral-500"></i>
-                  Budget
-                </span>
-                <span class="text-neutral-500 text-xs">Save more</span>
-              </button>
-              <button data-value="moderate" class="flex w-full items-center justify-between px-3.5 py-2.5 text-sm hover:bg-neutral-50">
-                <span class="flex items-center gap-2">
-                  <i data-lucide="wallet" class="h-4 w-4 text-neutral-500"></i>
-                  Moderate
-                </span>
-                <span class="text-neutral-500 text-xs">Balanced</span>
-              </button>
-              <button data-value="luxury" class="flex w-full items-center justify-between px-3.5 py-2.5 text-sm hover:bg-neutral-50">
-                <span class="flex items-center gap-2">
-                  <i data-lucide="gem" class="h-4 w-4 text-neutral-500"></i>
-                  Luxury
-                </span>
-                <span class="text-neutral-500 text-xs">Premium</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Interests -->
-          <div>
-            <label for="interests" class="block text-sm font-medium text-neutral-800">Interests</label>
-            <div class="mt-2 relative">
-              <input id="interests" type="text" placeholder="e.g., food, culture, museums, nightlife"
-                     class="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm outline-none ring-0 focus:border-neutral-400 focus:ring-2 focus:ring-neutral-200" />
-              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
-                <i data-lucide="sparkles" class="h-4.5 w-4.5"></i>
-              </span>
-            </div>
+          <!-- Target Ensembl Version Selection (Single Dropdown) -->
+            <div>
+            <label for="targetVersion" class="block text-sm font-medium text-neutral-800">Upgrade to Ensembl Version</label>
+              <select id="targetVersion" class="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 shadow-sm outline-none ring-0 focus:border-blue-400 focus:ring-2 focus:ring-blue-200">
+              <option value="107">Ensembl 107</option>
+                <option value="109">Ensembl 109</option>
+                <option value="110" selected>Ensembl 110</option>
+                <option value="111">Ensembl 111</option>
+              </select>
+            <p class="text-xs text-neutral-500 mt-1">Select the Ensembl version you want to upgrade your panel to</p>
           </div>
 
           <!-- Submit -->
           <div class="pt-2">
-            <button type="submit"
-                    class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-neutral-900 px-4 py-3 text-white shadow-sm transition hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300">
-              <i data-lucide="route" class="h-5 w-5"></i>
-              <span class="font-medium">Plan My Trip</span>
+            <button type="submit" id="analyzeButton" disabled
+                    class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:bg-neutral-300 disabled:cursor-not-allowed">
+              <i data-lucide="git-compare" class="h-5 w-5"></i>
+              <span class="font-medium">Analyze Panel</span>
             </button>
           </div>
         </form>
       </section>
 
-      <!-- Output -->
-      <section class="lg:col-span-2 space-y-6">
-        <div id="placeholderCard" class="rounded-xl border border-neutral-200 bg-white p-8 text-center shadow-sm">
-          <h3 class="text-xl md:text-2xl font-semibold tracking-tight">Fill out the form to get your personalized trip plan</h3>
-          <p class="mt-2 text-neutral-600">Enter your details on the left—your itinerary will appear here.</p>
-          <div class="mt-6 grid gap-3 sm:grid-cols-3">
-            <div class="rounded-lg border border-neutral-200 p-4">
-              <div class="flex items-center gap-2 text-neutral-700">
-                <i data-lucide="sunrise" class="h-4 w-4"></i>
-                Morning ideas
-              </div>
-              <p class="mt-1 text-sm text-neutral-600">Neighborhood walk, cafe, must-see spot.</p>
-            </div>
-            <div class="rounded-lg border border-neutral-200 p-4">
-              <div class="flex items-center gap-2 text-neutral-700">
-                <i data-lucide="utensils" class="h-4 w-4"></i>
-                Food moments
-              </div>
-              <p class="mt-1 text-sm text-neutral-600">Street food to chef-led tastings.</p>
-            </div>
-            <div class="rounded-lg border border-neutral-200 p-4">
-              <div class="flex items-center gap-2 text-neutral-700">
-                <i data-lucide="moon" class="h-4 w-4"></i>
-                Evenings
-              </div>
-              <p class="mt-1 text-sm text-neutral-600">Sunsets, shows, speakeasies.</p>
+      <!-- Info Panel -->
+      <section class="space-y-4">
+        <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-green-100 text-green-700">
+              <i data-lucide="circle-check" class="h-5 w-5"></i>
+            </span>
+            <div>
+              <div class="font-semibold tracking-tight">Green</div>
+              <p class="text-xs text-neutral-600">High confidence</p>
             </div>
           </div>
+          <p class="text-sm text-neutral-600">Diagnostic grade genes with strong evidence</p>
         </div>
 
-        <div id="results" class="hidden space-y-6"></div>
+        <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+              <i data-lucide="alert-circle" class="h-5 w-5"></i>
+            </span>
+            <div>
+              <div class="font-semibold tracking-tight">Amber</div>
+              <p class="text-xs text-neutral-600">Moderate confidence</p>
+            </div>
+          </div>
+          <p class="text-sm text-neutral-600">Genes with moderate supporting evidence</p>
+        </div>
+
+        <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-red-100 text-red-700">
+              <i data-lucide="circle-x" class="h-5 w-5"></i>
+            </span>
+            <div>
+              <div class="font-semibold tracking-tight">Red</div>
+              <p class="text-xs text-neutral-600">Low confidence</p>
+            </div>
+          </div>
+          <p class="text-sm text-neutral-600">Genes under review or limited evidence</p>
+        </div>
       </section>
     </div>
+
+    <!-- Results View -->
+    <div id="resultsView" class="hidden">
+      <div class="mb-4 flex items-center justify-between">
+        <button id="backButton" class="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900">
+          <i data-lucide="arrow-left" class="h-4 w-4"></i>
+          Back to Selection
+        </button>
+        <button id="exportButton" class="inline-flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm hover:bg-neutral-50">
+          <i data-lucide="download" class="h-4 w-4"></i>
+          Export CSV
+        </button>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 id="resultsPanelName" class="text-xl font-semibold tracking-tight"></h2>
+            <p id="resultsComparison" class="text-sm text-neutral-600 mt-1"></p>
+          </div>
+          <div class="text-right">
+            <p id="resultsGeneCount" class="text-2xl font-bold text-neutral-900"></p>
+            <p class="text-xs text-neutral-600">Total Genes</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-4 gap-4">
+          <div class="text-center p-3 bg-green-50 rounded-lg">
+            <p id="summaryRetained" class="text-2xl font-bold text-green-700">0</p>
+            <p class="text-xs text-green-700 mt-1">✓ Retained</p>
+          </div>
+          <div class="text-center p-3 bg-amber-50 rounded-lg">
+            <p id="summaryChanged" class="text-2xl font-bold text-amber-700">0</p>
+            <p class="text-xs text-amber-700 mt-1">⚠ Changed</p>
+          </div>
+          <div class="text-center p-3 bg-orange-50 rounded-lg">
+            <p id="summaryLocationChanged" class="text-2xl font-bold text-orange-700">0</p>
+            <p class="text-xs text-orange-700 mt-1">📍 Location Changed</p>
+          </div>
+          <div class="text-center p-3 bg-red-50 rounded-lg">
+            <p id="summaryMissing" class="text-2xl font-bold text-red-700">0</p>
+            <p class="text-xs text-red-700 mt-1">✗ Missing</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gene List -->
+      <div class="rounded-xl border border-neutral-200 bg-white shadow-sm">
+        <div class="p-4 border-b border-neutral-200">
+          <h3 class="font-semibold">Gene Comparisons</h3>
+          <p id="genesShowing" class="text-sm text-neutral-600 mt-1"></p>
+        </div>
+        <div id="geneList" class="divide-y divide-neutral-200">
+          <!-- Gene rows will be inserted here -->
+        </div>
+        <!-- Load More removed: All genes load automatically -->
+      </div>
+    </div>
+
   </main>
 
   <footer class="border-t border-neutral-200 bg-white">
-    <div class="mx-auto max-w-7xl px-6 py-10 text-sm text-neutral-600">
+    <div class="mx-auto max-w-7xl px-6 py-8 text-sm text-neutral-600">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-2">
-          <span class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-neutral-900 text-white">
-            <i data-lucide="compass" class="h-4.5 w-4.5"></i>
+          <span class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-blue-600 text-white">
+            <i data-lucide="dna" class="h-4.5 w-4.5"></i>
           </span>
           <span>&copy; <span id="year"></span> PanelChecker</span>
         </div>
-        <div class="flex items-center gap-4">
-          <a class="hover:text-neutral-900" href="#">Privacy</a>
-          <a class="hover:text-neutral-900" href="#">Terms</a>
-          <a class="hover:text-neutral-900" href="#">Support</a>
+        <div class="text-xs text-neutral-500">
+          GRCh38 Reference Genome • Human Only
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     // Initialize icons and year
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
     document.getElementById('year').textContent = new Date().getFullYear();
     renderIcons();
 
-    // Custom budget select
-    const budgetBtn = document.getElementById('budgetBtn');
-    const budgetMenu = document.getElementById('budgetMenu');
-    const budgetLabel = document.getElementById('budgetLabel');
-    const budgetValue = document.getElementById('budgetValue');
+    // State
+    let selectedPanel = null;
+    let allPanels = [];
+    let currentAnalysis = null;
+    let reviewPriorities = {};  // Track review priorities: { geneSymbol: "high" | "not-sure" | "low" | "not-set" }
 
-    budgetBtn.addEventListener('click', () => {
-      budgetMenu.classList.toggle('hidden');
-    });
+    // Elements
+    const selectionView = document.getElementById('selectionView');
+    const resultsView = document.getElementById('resultsView');
+    const panelSelect = document.getElementById('panelSelect');
+    const panelDropdown = document.getElementById('panelDropdown');
+    const analyzeButton = document.getElementById('analyzeButton');
+    const analysisForm = document.getElementById('analysisForm');
+    const backButton = document.getElementById('backButton');
 
-    budgetMenu.querySelectorAll('button[data-value]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const val = btn.getAttribute('data-value');
-        budgetValue.value = val;
-        budgetLabel.textContent = btn.innerText.trim().split('\n')[0];
-        budgetMenu.classList.add('hidden');
-      });
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!budgetBtn.contains(e.target) && !budgetMenu.contains(e.target)) {
-        budgetMenu.classList.add('hidden');
-      }
-    });
-
-    // Planner logic (calls backend)
-    const form = document.getElementById('plannerForm');
-    const results = document.getElementById('results');
-    const placeholderCard = document.getElementById('placeholderCard');
-
-    async function submitToBackend(e) {
-      e.preventDefault();
-
-      const destination = (document.getElementById('destination').value || '').trim();
-      const durationNum = Math.max(1, Math.min(30, parseInt(document.getElementById('duration').value || '0', 10)));
-      const duration = isFinite(durationNum) ? `${durationNum} days` : '3 days';
-      const budget = document.getElementById('budgetValue').value || 'moderate';
-      const interests = (document.getElementById('interests').value || '').trim();
-
-      if (!destination || !durationNum) {
-        alert('Please enter a destination and duration.');
-        return;
-      }
-
-      placeholderCard.classList.add('hidden');
-      results.classList.remove('hidden');
-      results.innerHTML = `
-        <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-          <div class="flex items-center gap-3 text-neutral-700">
-            <i data-lucide="loader-2" class="h-5 w-5 animate-spin"></i>
-            Planning your itinerary...
-          </div>
-        </div>
-      `;
-      renderIcons();
-
+    // Load all panels on page load
+    async function loadPanels() {
       try {
-        const resp = await fetch('/plan-trip', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ destination, duration, budget, interests })
-        });
+        const response = await fetch('/api/panels');
+        const data = await response.json();
+        allPanels = data.panels;
+        
+        if (allPanels.length === 0) {
+          panelDropdown.innerHTML = '<div class="p-4 text-center text-neutral-500 text-sm">No panels found</div>';
+          return;
+        }
 
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const data = await resp.json();
-        const md = (data && data.result) ? data.result : 'No result';
+        renderPanelDropdown(allPanels);
 
-        const content = (window.marked && window.marked.parse) ? window.marked.parse(md) : `<pre class="whitespace-pre-wrap">${md}</pre>`;
-        results.innerHTML = `
-          <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-            <div class="mb-3 flex items-center justify-between">
-              <h3 class="text-xl font-semibold tracking-tight">Your Itinerary</h3>
-              <button id="printBtn" class="inline-flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-sm hover:bg-neutral-50">
-                <i data-lucide="printer" class="h-4 w-4"></i> Print / PDF
-              </button>
-            </div>
-            <div class="prose max-w-none">${content}</div>
-          </div>
-        `;
-        renderIcons();
-        const printBtn = document.getElementById('printBtn');
-        printBtn?.addEventListener('click', () => window.print());
-      } catch (err) {
-        results.innerHTML = `
-          <div class="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700">
-            <div class="flex items-center gap-2">
-              <i data-lucide="alert-triangle" class="h-5 w-5"></i>
-              <span>Failed to plan trip. Please try again.</span>
-            </div>
-          </div>
-        `;
-        renderIcons();
-        console.error('Plan error:', err);
+      } catch (error) {
+        console.error('Error loading panels:', error);
+        panelDropdown.innerHTML = '<div class="p-4 text-center text-red-600 text-sm">Error loading panels. Please try again.</div>';
       }
     }
 
-    form.addEventListener('submit', submitToBackend);
+    // Render panel dropdown
+    function renderPanelDropdown(panels) {
+      if (panels.length === 0) {
+        panelDropdown.innerHTML = '<div class="p-4 text-center text-neutral-500 text-sm">No matching panels</div>';
+        renderIcons();
+        return;
+      }
+
+      panelDropdown.innerHTML = panels.map(panel => `
+        <button type="button" class="panel-option w-full text-left p-3 hover:bg-blue-50 transition border-b border-neutral-100 last:border-0" data-panel='${JSON.stringify(panel)}'>
+          <div class="font-medium text-neutral-900 text-sm">${panel.name}</div>
+          <div class="text-xs text-neutral-600 mt-0.5">
+            ID: ${panel.id} • v${panel.version} • ${panel.gene_count} genes
+            </div>
+          </button>
+        `).join('');
+
+        renderIcons();
+
+        // Add click handlers
+      document.querySelectorAll('.panel-option').forEach(item => {
+          item.addEventListener('click', () => {
+            const panel = JSON.parse(item.getAttribute('data-panel'));
+            selectPanel(panel);
+          });
+        });
+    }
+
+    // Filter panels based on search
+    function filterPanels(searchTerm) {
+      const term = searchTerm.toLowerCase();
+      const filtered = allPanels.filter(panel => 
+        panel.name.toLowerCase().includes(term) ||
+        panel.id.toString().includes(term)
+      );
+      renderPanelDropdown(filtered);
+    }
+
+    // Searchable dropdown functionality
+    panelSelect.addEventListener('focus', () => {
+      panelDropdown.classList.remove('hidden');
+    });
+
+    panelSelect.addEventListener('input', (e) => {
+      filterPanels(e.target.value);
+      panelDropdown.classList.remove('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!panelSelect.contains(e.target) && !panelDropdown.contains(e.target)) {
+        panelDropdown.classList.add('hidden');
+      }
+    });
+
+    // Detect current Ensembl version from panel genes
+
+    // Select a panel
+    async function selectPanel(panel) {
+      selectedPanel = panel;
+      
+      // Update input field
+      panelSelect.value = panel.name;
+      panelDropdown.classList.add('hidden');
+      
+      // Show selected panel info
+      document.getElementById('selectedPanelInfo').classList.remove('hidden');
+      document.getElementById('selectedPanelName').textContent = panel.name;
+      document.getElementById('selectedPanelDetails').textContent = `ID: ${panel.id} • Version: ${panel.version} • ${panel.gene_count} genes`;
+      
+      // Enable analyze button
+      analyzeButton.disabled = false;
+    }
+
+    // Analyze panel
+    analysisForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!selectedPanel) {
+        alert('Please select a panel first');
+        return;
+      }
+
+      const targetVersion = parseInt(document.getElementById('targetVersion').value);
+
+      // Show loading state
+      analyzeButton.disabled = true;
+      analyzeButton.innerHTML = '<i data-lucide="loader-2" class="h-5 w-5 animate-spin"></i><span class="font-medium">Analyzing...</span>';
+      renderIcons();
+
+      try {
+        const response = await fetch('/api/analyze-panel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            panel_id: selectedPanel.id,
+            panel_version: selectedPanel.version,
+            target_ensembl_version: targetVersion
+            // Note: Loads ALL genes (no pagination)
+          })
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        currentAnalysis = await response.json();
+        currentAnalysis.targetVersion = targetVersion;
+        reviewPriorities = {};  // Reset priorities for new analysis
+        
+        // Show results view
+        showResults();
+
+      } catch (error) {
+        console.error('Analysis error:', error);
+        alert('Failed to analyze panel. Please try again.');
+      } finally {
+        analyzeButton.disabled = false;
+        analyzeButton.innerHTML = '<i data-lucide="git-compare" class="h-5 w-5"></i><span class="font-medium">Analyze Panel</span>';
+        renderIcons();
+      }
+    });
+
+    // Show results view
+    function showResults() {
+      selectionView.classList.add('hidden');
+      resultsView.classList.remove('hidden');
+      
+      // Update summary
+      document.getElementById('resultsPanelName').textContent = currentAnalysis.panel_name;
+      document.getElementById('resultsComparison').textContent = 
+        `Target: Ensembl ${currentAnalysis.targetVersion}`;
+      document.getElementById('resultsGeneCount').textContent = currentAnalysis.total_genes;
+      
+      document.getElementById('summaryRetained').textContent = currentAnalysis.summary.symbols_retained;
+      document.getElementById('summaryChanged').textContent = currentAnalysis.summary.symbols_changed;
+      document.getElementById('summaryLocationChanged').textContent = currentAnalysis.summary.locations_changed;
+      document.getElementById('summaryMissing').textContent = currentAnalysis.summary.genes_missing;
+      
+      document.getElementById('genesShowing').textContent = 
+        `Showing all ${currentAnalysis.genes_analyzed} genes`;
+      
+      // Render genes (auto-expanded)
+      renderGenes(currentAnalysis.genes);
+    }
+
+    // Render gene list
+    function renderGenes(genes) {
+      const geneList = document.getElementById('geneList');
+      
+      genes.forEach(gene => {
+        const statusClass = {
+          'retained': 'text-green-700 bg-green-50',
+          'changed': 'text-amber-700 bg-amber-50',
+          'missing': 'text-red-700 bg-red-50'
+        }[gene.status];
+
+        const statusIcon = {
+          'retained': 'check-circle',
+          'changed': 'alert-circle',
+          'missing': 'x-circle'
+        }[gene.status];
+
+        const confidenceClass = {
+          'green': 'bg-green-500 text-white',
+          'amber': 'bg-amber-500 text-white',
+          'red': 'bg-red-500 text-white'
+        }[gene.confidence];
+
+        // Check for differences in each column
+        const ensemblIdChanged = gene.current_version && gene.target_version && 
+          gene.current_version.ensembl_id !== gene.target_version.ensembl_id;
+        const chrChanged = gene.current_version && gene.target_version && 
+          gene.current_version.chromosome !== gene.target_version.chromosome;
+        const startChanged = gene.current_version && gene.target_version && 
+          gene.current_version.start !== gene.target_version.start;
+        const endChanged = gene.current_version && gene.target_version && 
+          gene.current_version.end !== gene.target_version.end;
+        const strandChanged = gene.current_version && gene.target_version && 
+          gene.current_version.strand !== gene.target_version.strand;
+
+        // Calculate percentage changes
+        let startPctChange = null;
+        let endPctChange = null;
+        let sizePctChange = null;
+        
+        if (gene.current_version && gene.target_version) {
+          const currentSize = gene.current_version.end - gene.current_version.start;
+          const targetSize = gene.target_version.end - gene.target_version.start;
+          
+          // Size percentage change (most important)
+          sizePctChange = ((targetSize - currentSize) / currentSize * 100).toFixed(2);
+          
+          // Individual position changes (for reference)
+          if (gene.current_version.start !== 0) {
+            startPctChange = ((gene.target_version.start - gene.current_version.start) / gene.current_version.start * 100).toFixed(2);
+          }
+          if (gene.current_version.end !== 0) {
+            endPctChange = ((gene.target_version.end - gene.current_version.end) / gene.current_version.end * 100).toFixed(2);
+          }
+        }
+        
+        // Format percentage change with color coding
+        const formatPctChange = (pct) => {
+          if (pct === null || pct === '0.00') return '<span class="text-neutral-500">—</span>';
+          const numPct = parseFloat(pct);
+          const absNum = Math.abs(numPct);
+          let colorClass = 'text-neutral-900';
+          let bgClass = '';
+          
+          if (absNum > 10) {
+            colorClass = 'text-red-700 font-bold';
+            bgClass = 'bg-red-50';
+          } else if (absNum > 1) {
+            colorClass = 'text-amber-700 font-semibold';
+            bgClass = 'bg-amber-50';
+          } else if (absNum > 0) {
+            colorClass = 'text-blue-700';
+          }
+          
+          const sign = numPct > 0 ? '+' : '';
+          return `<span class="${colorClass} ${bgClass} px-1 rounded">${sign}${pct}%</span>`;
+        };
+
+        // Build callout badges
+        const callouts = [];
+        
+        // Gene not found in target
+        if (!gene.target_version) {
+          callouts.push(`
+            <span class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-red-700 bg-red-50">
+              <i data-lucide="x-circle" class="h-3 w-3"></i>
+              Gene Not Found
+            </span>
+          `);
+        }
+        
+        // Symbol changed
+        if (!gene.symbol_retained && gene.target_version) {
+          callouts.push(`
+            <span class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-orange-700 bg-orange-50">
+              <i data-lucide="alert-triangle" class="h-3 w-3"></i>
+              Symbol Changed
+            </span>
+          `);
+        }
+        
+        // Ensembl ID changed
+        if (!gene.ensembl_id_retained && gene.target_version) {
+          callouts.push(`
+            <span class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-amber-700 bg-amber-50">
+              <i data-lucide="hash" class="h-3 w-3"></i>
+              Ensembl ID Changed
+            </span>
+          `);
+        }
+        
+        // Location changed
+        if (gene.location_changed && gene.target_version) {
+          callouts.push(`
+            <span class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-blue-700 bg-blue-50">
+              <i data-lucide="map-pin" class="h-3 w-3"></i>
+              Location Changed
+            </span>
+          `);
+        }
+        
+        // All retained (only if target exists)
+        if (gene.target_version && gene.symbol_retained && gene.ensembl_id_retained && !gene.location_changed) {
+          callouts.push(`
+            <span class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-green-700 bg-green-50">
+              <i data-lucide="check-circle" class="h-3 w-3"></i>
+              All Retained
+            </span>
+          `);
+        }
+
+        const geneRow = document.createElement('div');
+        geneRow.className = 'p-4';
+        geneRow.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-wrap">
+              <!-- 1. Confidence badge first -->
+              <span class="inline-flex items-center justify-center rounded-full w-12 h-6 text-xs font-bold ${confidenceClass}">
+                ${gene.confidence.toUpperCase()}
+              </span>
+              <!-- 2. Gene symbol -->
+              <span class="font-mono font-semibold text-neutral-900 text-lg">${gene.gene_symbol}</span>
+              <!-- 3. Multiple status callouts -->
+              ${callouts.join('')}
+            </div>
+            <button class="expand-gene text-neutral-400 hover:text-neutral-600">
+              <i data-lucide="chevron-up" class="h-4 w-4"></i>
+            </button>
+          </div>
+          
+          <!-- Accordion/Details View with Table (AUTO-EXPANDED) -->
+          <div class="gene-details mt-4">
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-xs border border-neutral-200">
+                <thead class="bg-neutral-50">
+                  <tr>
+                    <th class="px-3 py-2 text-left font-semibold text-neutral-700 border-b border-neutral-200">Field</th>
+                    <th class="px-3 py-2 text-left font-semibold text-neutral-700 border-b border-neutral-200">
+                      Current Version ${gene.current_ensembl_version ? '(Ensembl ' + gene.current_ensembl_version + ')' : ''}
+                    </th>
+                    <th class="px-3 py-2 text-left font-semibold text-neutral-700 border-b border-neutral-200">
+                      Target Version (Ensembl ${gene.target_ensembl_version})
+                    </th>
+                    <th class="px-3 py-2 text-center font-semibold text-neutral-700 border-b border-neutral-200">
+                      % Change
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-neutral-200">
+                  <tr>
+                    <td class="px-3 py-2 font-medium text-neutral-600">Ensembl ID</td>
+                    <td class="px-3 py-2 font-mono ${ensemblIdChanged ? 'bg-amber-50' : ''}">
+                      ${gene.current_version ? gene.current_version.ensembl_id : '<span class="text-neutral-400">N/A</span>'}
+                    </td>
+                    <td class="px-3 py-2 font-mono ${ensemblIdChanged ? 'bg-amber-50 font-bold' : ''}">
+                      ${gene.target_version ? gene.target_version.ensembl_id : '<span class="text-red-600 font-semibold">Missing</span>'}
+                    </td>
+                    <td class="px-3 py-2 text-center text-neutral-400">—</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-medium text-neutral-600">Chromosome</td>
+                    <td class="px-3 py-2 font-mono ${chrChanged ? 'bg-amber-50' : ''}">
+                      ${gene.current_version ? 'chr' + gene.current_version.chromosome : '<span class="text-neutral-400">N/A</span>'}
+                    </td>
+                    <td class="px-3 py-2 font-mono ${chrChanged ? 'bg-amber-50 font-bold' : ''}">
+                      ${gene.target_version ? 'chr' + gene.target_version.chromosome : '<span class="text-red-600 font-semibold">Missing</span>'}
+                    </td>
+                    <td class="px-3 py-2 text-center text-neutral-400">—</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-medium text-neutral-600">Start Position</td>
+                    <td class="px-3 py-2 font-mono ${startChanged ? 'bg-amber-50' : ''}">
+                      ${gene.current_version ? gene.current_version.start.toLocaleString() : '<span class="text-neutral-400">N/A</span>'}
+                    </td>
+                    <td class="px-3 py-2 font-mono ${startChanged ? 'bg-amber-50 font-bold' : ''}">
+                      ${gene.target_version ? gene.target_version.start.toLocaleString() : '<span class="text-red-600 font-semibold">Missing</span>'}
+                    </td>
+                    <td class="px-3 py-2 text-center text-neutral-400">—</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-medium text-neutral-600">End Position</td>
+                    <td class="px-3 py-2 font-mono ${endChanged ? 'bg-amber-50' : ''}">
+                      ${gene.current_version ? gene.current_version.end.toLocaleString() : '<span class="text-neutral-400">N/A</span>'}
+                    </td>
+                    <td class="px-3 py-2 font-mono ${endChanged ? 'bg-amber-50 font-bold' : ''}">
+                      ${gene.target_version ? gene.target_version.end.toLocaleString() : '<span class="text-red-600 font-semibold">Missing</span>'}
+                    </td>
+                    <td class="px-3 py-2 text-center text-neutral-400">—</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-medium text-neutral-600">Strand</td>
+                    <td class="px-3 py-2 font-mono ${strandChanged ? 'bg-amber-50' : ''}">
+                      ${gene.current_version ? (gene.current_version.strand > 0 ? '+' : '-') : '<span class="text-neutral-400">N/A</span>'}
+                    </td>
+                    <td class="px-3 py-2 font-mono ${strandChanged ? 'bg-amber-50 font-bold' : ''}">
+                      ${gene.target_version ? (gene.target_version.strand > 0 ? '+' : '-') : '<span class="text-red-600 font-semibold">Missing</span>'}
+                    </td>
+                    <td class="px-3 py-2 text-center text-neutral-400">—</td>
+                  </tr>
+                  <tr class="bg-blue-50 bg-opacity-30">
+                    <td class="px-3 py-2 font-medium text-neutral-900">Gene Size Change</td>
+                    <td class="px-3 py-2 font-mono text-xs">
+                      ${gene.current_version ? (gene.current_version.end - gene.current_version.start).toLocaleString() + ' bp' : '<span class="text-neutral-400">N/A</span>'}
+                    </td>
+                    <td class="px-3 py-2 font-mono text-xs ${gene.location_changed ? 'bg-amber-50 font-bold' : ''}">
+                      ${gene.target_version ? (gene.target_version.end - gene.target_version.start).toLocaleString() + ' bp' : '<span class="text-red-600 font-semibold">Missing</span>'}
+                    </td>
+                    <td class="px-3 py-2 text-center font-semibold">${formatPctChange(sizePctChange)}</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-medium text-neutral-600">Location Summary</td>
+                    <td class="px-3 py-2 font-mono text-xs">
+                      ${gene.current_version ? `chr${gene.current_version.chromosome}:${gene.current_version.start.toLocaleString()}-${gene.current_version.end.toLocaleString()}` : '<span class="text-neutral-400">N/A</span>'}
+                    </td>
+                    <td class="px-3 py-2 font-mono text-xs ${gene.location_changed ? 'bg-amber-50 font-bold' : ''}">
+                      ${gene.target_version ? `chr${gene.target_version.chromosome}:${gene.target_version.start.toLocaleString()}-${gene.target_version.end.toLocaleString()}` : '<span class="text-red-600 font-semibold">Missing</span>'}
+                    </td>
+                    <td class="px-3 py-2 text-center text-neutral-400">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Review Priority Section -->
+            <div class="review-priority-section mt-4 p-4 bg-gray-50 border-t border-neutral-200 rounded-b">
+              <p class="text-sm font-medium text-neutral-700 mb-3">Review Priority:</p>
+              <div class="flex gap-4 flex-wrap">
+                <label class="inline-flex items-center cursor-pointer">
+                  <input type="radio" name="priority_${gene.gene_symbol}" value="not-set" data-gene="${gene.gene_symbol}" 
+                    class="priority-radio w-4 h-4 text-neutral-600" checked>
+                  <span class="ml-2 text-sm text-neutral-600">Not Set</span>
+                </label>
+                <label class="inline-flex items-center cursor-pointer">
+                  <input type="radio" name="priority_${gene.gene_symbol}" value="high" data-gene="${gene.gene_symbol}" 
+                    class="priority-radio w-4 h-4 text-red-600">
+                  <span class="ml-2 text-sm text-red-700 font-medium">🔴 High</span>
+                </label>
+                <label class="inline-flex items-center cursor-pointer">
+                  <input type="radio" name="priority_${gene.gene_symbol}" value="not-sure" data-gene="${gene.gene_symbol}" 
+                    class="priority-radio w-4 h-4 text-amber-600">
+                  <span class="ml-2 text-sm text-amber-700 font-medium">🟡 Not Sure</span>
+                </label>
+                <label class="inline-flex items-center cursor-pointer">
+                  <input type="radio" name="priority_${gene.gene_symbol}" value="low" data-gene="${gene.gene_symbol}" 
+                    class="priority-radio w-4 h-4 text-green-600">
+                  <span class="ml-2 text-sm text-green-700 font-medium">🟢 Low/Not Needed</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        geneList.appendChild(geneRow);
+
+        // Add expand/collapse handler
+        const expandButton = geneRow.querySelector('.expand-gene');
+        const details = geneRow.querySelector('.gene-details');
+        expandButton.addEventListener('click', () => {
+          details.classList.toggle('hidden');
+          const icon = expandButton.querySelector('i');
+          icon.setAttribute('data-lucide', details.classList.contains('hidden') ? 'chevron-down' : 'chevron-up');
+          renderIcons();
+        });
+        
+        // Add priority radio button handlers
+        const priorityRadios = geneRow.querySelectorAll('.priority-radio');
+        priorityRadios.forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            const geneSymbol = e.target.dataset.gene;
+            const priority = e.target.value;
+            
+            // Store priority in state
+            reviewPriorities[geneSymbol] = priority;
+            
+            // Auto-collapse table (only if not "not-set")
+            if (priority !== 'not-set') {
+              details.classList.add('hidden');
+              const icon = expandButton.querySelector('i');
+              icon.setAttribute('data-lucide', 'chevron-down');
+              renderIcons();
+            }
+          });
+        });
+      });
+
+      renderIcons();
+    }
+
+    // Back button
+    backButton.addEventListener('click', () => {
+      resultsView.classList.add('hidden');
+      selectionView.classList.remove('hidden');
+      document.getElementById('geneList').innerHTML = '';
+      reviewPriorities = {};  // Reset priorities
+    });
+
+    // Export CSV with priorities
+    document.getElementById('exportButton').addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/export-panel-csv', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            panel_id: selectedPanel.id,
+            target_version: currentAnalysis.targetVersion,
+            review_priorities: reviewPriorities
+          })
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        // Download the CSV
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `PanelChecker_${selectedPanel.id}_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } catch (error) {
+        console.error('Export error:', error);
+        alert('Failed to export CSV. Please try again.');
+      }
+    });
+
+    // Initialize
+    loadPanels();
   </script>
 </body>
 </html>
+

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PanelChecker - Genomics Reference Data Curation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-neutral-50 text-neutral-900 antialiased font-[Inter]">
+  <!-- Nav -->
+  <header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
+    <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+          <i data-lucide="dna" class="h-5 w-5"></i>
+        </span>
+        <span class="text-lg font-semibold tracking-tight">PanelChecker</span>
+      </div>
+      <div class="text-sm text-neutral-600">Genomics Reference Data Curation</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="mx-auto max-w-7xl px-6 pt-8 pb-6">
+    <div class="relative overflow-hidden rounded-2xl border border-neutral-200 bg-gradient-to-tr from-blue-500 via-blue-600 to-indigo-600">
+      <div class="relative p-8 md:p-10">
+        <h1 class="text-white text-3xl md:text-4xl font-semibold tracking-tight leading-tight">
+          Panel Reference Data Validator
+        </h1>
+        <p class="mt-3 text-blue-100/90 text-base md:text-lg max-w-2xl">
+          Compare gene panel data across Ensembl versions to identify symbol changes, location shifts, and missing genes before updating reference data.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
+            <i data-lucide="check-circle" class="h-4 w-4"></i>
+            GRCh38 Standard
+          </div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
+            <i data-lucide="database" class="h-4 w-4"></i>
+            PanelApp Integration
+          </div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white text-sm">
+            <i data-lucide="git-compare" class="h-4 w-4"></i>
+            Version Comparison
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="mx-auto max-w-7xl px-6 pb-20">
+    
+    <!-- Selection View -->
+    <div id="selectionView" class="grid gap-6 lg:grid-cols-3">
+      <!-- Form -->
+      <section class="lg:col-span-2 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+        <h2 class="text-2xl font-semibold tracking-tight">Configure Analysis</h2>
+        <p class="mt-1 text-sm text-neutral-600">Select a panel and Ensembl version to begin comparison</p>
+
+        <form id="analysisForm" class="mt-6 space-y-5" autocomplete="off">
+          <!-- Panel Search -->
+          <div>
+            <label for="panelSearch" class="block text-sm font-medium text-neutral-800">Search Panels</label>
+            <div class="mt-2 relative">
+              <input id="panelSearch" type="text" placeholder="Search by panel name or ID..."
+                     class="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm outline-none ring-0 focus:border-blue-400 focus:ring-2 focus:ring-blue-200" />
+              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
+                <i data-lucide="search" class="h-4.5 w-4.5"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Panel List -->
+          <div>
+            <label class="block text-sm font-medium text-neutral-800 mb-2">Available Panels</label>
+            <div id="panelList" class="border border-neutral-200 rounded-lg overflow-hidden max-h-64 overflow-y-auto">
+              <div class="p-4 text-center text-neutral-500">
+                <i data-lucide="loader-2" class="h-5 w-5 animate-spin mx-auto mb-2"></i>
+                <p class="text-sm">Loading panels...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Panel Info -->
+          <div id="selectedPanelInfo" class="hidden p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div class="flex items-center gap-2 text-blue-800 font-medium mb-1">
+              <i data-lucide="check-circle-2" class="h-4 w-4"></i>
+              <span>Selected Panel</span>
+            </div>
+            <p id="selectedPanelName" class="text-sm text-blue-900"></p>
+            <p id="selectedPanelDetails" class="text-xs text-blue-700 mt-1"></p>
+          </div>
+
+          <!-- Ensembl Version Selection -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="currentVersion" class="block text-sm font-medium text-neutral-800">Current Ensembl Version</label>
+              <select id="currentVersion" class="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 shadow-sm outline-none ring-0 focus:border-blue-400 focus:ring-2 focus:ring-blue-200">
+                <option value="109">Ensembl 109</option>
+                <option value="110">Ensembl 110</option>
+                <option value="111">Ensembl 111</option>
+              </select>
+            </div>
+            <div>
+              <label for="targetVersion" class="block text-sm font-medium text-neutral-800">Target Ensembl Version</label>
+              <select id="targetVersion" class="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-neutral-900 shadow-sm outline-none ring-0 focus:border-blue-400 focus:ring-2 focus:ring-blue-200">
+                <option value="109">Ensembl 109</option>
+                <option value="110" selected>Ensembl 110</option>
+                <option value="111">Ensembl 111</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="pt-2">
+            <button type="submit" id="analyzeButton" disabled
+                    class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:bg-neutral-300 disabled:cursor-not-allowed">
+              <i data-lucide="git-compare" class="h-5 w-5"></i>
+              <span class="font-medium">Analyze Panel</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Info Panel -->
+      <section class="space-y-4">
+        <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-green-100 text-green-700">
+              <i data-lucide="circle-check" class="h-5 w-5"></i>
+            </span>
+            <div>
+              <div class="font-semibold tracking-tight">Green</div>
+              <p class="text-xs text-neutral-600">High confidence</p>
+            </div>
+          </div>
+          <p class="text-sm text-neutral-600">Diagnostic grade genes with strong evidence</p>
+        </div>
+
+        <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+              <i data-lucide="alert-circle" class="h-5 w-5"></i>
+            </span>
+            <div>
+              <div class="font-semibold tracking-tight">Amber</div>
+              <p class="text-xs text-neutral-600">Moderate confidence</p>
+            </div>
+          </div>
+          <p class="text-sm text-neutral-600">Genes with moderate supporting evidence</p>
+        </div>
+
+        <div class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-red-100 text-red-700">
+              <i data-lucide="circle-x" class="h-5 w-5"></i>
+            </span>
+            <div>
+              <div class="font-semibold tracking-tight">Red</div>
+              <p class="text-xs text-neutral-600">Low confidence</p>
+            </div>
+          </div>
+          <p class="text-sm text-neutral-600">Genes under review or limited evidence</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Results View -->
+    <div id="resultsView" class="hidden">
+      <div class="mb-4 flex items-center justify-between">
+        <button id="backButton" class="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900">
+          <i data-lucide="arrow-left" class="h-4 w-4"></i>
+          Back to Selection
+        </button>
+        <button id="exportButton" class="inline-flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm hover:bg-neutral-50">
+          <i data-lucide="download" class="h-4 w-4"></i>
+          Export CSV
+        </button>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 id="resultsPanelName" class="text-xl font-semibold tracking-tight"></h2>
+            <p id="resultsComparison" class="text-sm text-neutral-600 mt-1"></p>
+          </div>
+          <div class="text-right">
+            <p id="resultsGeneCount" class="text-2xl font-bold text-neutral-900"></p>
+            <p class="text-xs text-neutral-600">Total Genes</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-4 gap-4">
+          <div class="text-center p-3 bg-green-50 rounded-lg">
+            <p id="summaryRetained" class="text-2xl font-bold text-green-700">0</p>
+            <p class="text-xs text-green-700 mt-1">✓ Retained</p>
+          </div>
+          <div class="text-center p-3 bg-amber-50 rounded-lg">
+            <p id="summaryChanged" class="text-2xl font-bold text-amber-700">0</p>
+            <p class="text-xs text-amber-700 mt-1">⚠ Changed</p>
+          </div>
+          <div class="text-center p-3 bg-orange-50 rounded-lg">
+            <p id="summaryLocationChanged" class="text-2xl font-bold text-orange-700">0</p>
+            <p class="text-xs text-orange-700 mt-1">📍 Location Changed</p>
+          </div>
+          <div class="text-center p-3 bg-red-50 rounded-lg">
+            <p id="summaryMissing" class="text-2xl font-bold text-red-700">0</p>
+            <p class="text-xs text-red-700 mt-1">✗ Missing</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gene List -->
+      <div class="rounded-xl border border-neutral-200 bg-white shadow-sm">
+        <div class="p-4 border-b border-neutral-200">
+          <h3 class="font-semibold">Gene Comparisons</h3>
+          <p id="genesShowing" class="text-sm text-neutral-600 mt-1"></p>
+        </div>
+        <div id="geneList" class="divide-y divide-neutral-200">
+          <!-- Gene rows will be inserted here -->
+        </div>
+        <div id="loadMoreContainer" class="p-4 text-center border-t border-neutral-200">
+          <button id="loadMoreButton" class="inline-flex items-center gap-2 rounded-lg bg-neutral-100 px-4 py-2 text-sm hover:bg-neutral-200">
+            <i data-lucide="chevron-down" class="h-4 w-4"></i>
+            Load More Genes
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-neutral-200 bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-8 text-sm text-neutral-600">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-blue-600 text-white">
+            <i data-lucide="dna" class="h-4.5 w-4.5"></i>
+          </span>
+          <span>&copy; <span id="year"></span> PanelChecker</span>
+        </div>
+        <div class="text-xs text-neutral-500">
+          GRCh38 Reference Genome • Human Only
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize icons and year
+    function renderIcons() { if (window.lucide) lucide.createIcons(); }
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderIcons();
+
+    // State
+    let selectedPanel = null;
+    let currentAnalysis = null;
+    let currentOffset = 0;
+
+    // Elements
+    const selectionView = document.getElementById('selectionView');
+    const resultsView = document.getElementById('resultsView');
+    const panelSearch = document.getElementById('panelSearch');
+    const panelList = document.getElementById('panelList');
+    const analyzeButton = document.getElementById('analyzeButton');
+    const analysisForm = document.getElementById('analysisForm');
+    const backButton = document.getElementById('backButton');
+    const loadMoreButton = document.getElementById('loadMoreButton');
+
+    // Load panels on page load
+    async function loadPanels(searchTerm = '') {
+      try {
+        const url = searchTerm 
+          ? `/api/panels?search=${encodeURIComponent(searchTerm)}`
+          : '/api/panels';
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.panels.length === 0) {
+          panelList.innerHTML = '<div class="p-4 text-center text-neutral-500 text-sm">No panels found</div>';
+          return;
+        }
+
+        panelList.innerHTML = data.panels.map(panel => `
+          <button type="button" class="panel-item w-full text-left p-4 hover:bg-neutral-50 transition border-b border-neutral-100 last:border-0" data-panel='${JSON.stringify(panel)}'>
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <div class="font-medium text-neutral-900">${panel.name}</div>
+                <div class="text-xs text-neutral-600 mt-1">
+                  ID: ${panel.id} • Version: ${panel.version} • ${panel.gene_count} genes
+                </div>
+              </div>
+              <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
+                <i data-lucide="check" class="h-3 w-3"></i>
+                Signed Off
+              </span>
+            </div>
+          </button>
+        `).join('');
+
+        renderIcons();
+
+        // Add click handlers
+        document.querySelectorAll('.panel-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const panel = JSON.parse(item.getAttribute('data-panel'));
+            selectPanel(panel);
+          });
+        });
+
+      } catch (error) {
+        console.error('Error loading panels:', error);
+        panelList.innerHTML = '<div class="p-4 text-center text-red-600 text-sm">Error loading panels. Please try again.</div>';
+      }
+    }
+
+    // Select a panel
+    function selectPanel(panel) {
+      selectedPanel = panel;
+      
+      // Update UI
+      document.querySelectorAll('.panel-item').forEach(item => {
+        item.classList.remove('bg-blue-50', 'border-blue-200');
+      });
+      event.currentTarget.classList.add('bg-blue-50', 'border-blue-200');
+      
+      // Show selected panel info
+      document.getElementById('selectedPanelInfo').classList.remove('hidden');
+      document.getElementById('selectedPanelName').textContent = panel.name;
+      document.getElementById('selectedPanelDetails').textContent = `ID: ${panel.id} • Version: ${panel.version} • ${panel.gene_count} genes`;
+      
+      // Enable analyze button
+      analyzeButton.disabled = false;
+    }
+
+    // Search panels (debounced)
+    let searchTimeout;
+    panelSearch.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        loadPanels(e.target.value);
+      }, 300);
+    });
+
+    // Analyze panel
+    analysisForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!selectedPanel) {
+        alert('Please select a panel first');
+        return;
+      }
+
+      const currentVersion = parseInt(document.getElementById('currentVersion').value);
+      const targetVersion = parseInt(document.getElementById('targetVersion').value);
+
+      if (currentVersion === targetVersion) {
+        alert('Please select different Ensembl versions for comparison');
+        return;
+      }
+
+      // Show loading state
+      analyzeButton.disabled = true;
+      analyzeButton.innerHTML = '<i data-lucide="loader-2" class="h-5 w-5 animate-spin"></i><span class="font-medium">Analyzing...</span>';
+      renderIcons();
+
+      try {
+        const response = await fetch('/api/analyze-panel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            panel_id: selectedPanel.id,
+            panel_version: selectedPanel.version,
+            current_ensembl_version: currentVersion,
+            target_ensembl_version: targetVersion,
+            offset: 0,
+            limit: 30
+          })
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        currentAnalysis = await response.json();
+        currentOffset = 30;
+        
+        // Show results view
+        showResults();
+
+      } catch (error) {
+        console.error('Analysis error:', error);
+        alert('Failed to analyze panel. Please try again.');
+      } finally {
+        analyzeButton.disabled = false;
+        analyzeButton.innerHTML = '<i data-lucide="git-compare" class="h-5 w-5"></i><span class="font-medium">Analyze Panel</span>';
+        renderIcons();
+      }
+    });
+
+    // Show results view
+    function showResults() {
+      selectionView.classList.add('hidden');
+      resultsView.classList.remove('hidden');
+      
+      // Update summary
+      document.getElementById('resultsPanelName').textContent = currentAnalysis.panel_name;
+      document.getElementById('resultsComparison').textContent = 
+        `Comparing Ensembl ${document.getElementById('currentVersion').value} → ${document.getElementById('targetVersion').value}`;
+      document.getElementById('resultsGeneCount').textContent = currentAnalysis.total_genes;
+      
+      document.getElementById('summaryRetained').textContent = currentAnalysis.summary.symbols_retained;
+      document.getElementById('summaryChanged').textContent = currentAnalysis.summary.symbols_changed;
+      document.getElementById('summaryLocationChanged').textContent = currentAnalysis.summary.locations_changed;
+      document.getElementById('summaryMissing').textContent = currentAnalysis.summary.genes_missing;
+      
+      document.getElementById('genesShowing').textContent = 
+        `Showing 1-${currentAnalysis.genes_analyzed} of ${currentAnalysis.total_genes}`;
+      
+      // Render genes
+      renderGenes(currentAnalysis.genes);
+      
+      // Show/hide load more button
+      document.getElementById('loadMoreContainer').style.display = 
+        currentAnalysis.has_more ? 'block' : 'none';
+    }
+
+    // Render gene list
+    function renderGenes(genes) {
+      const geneList = document.getElementById('geneList');
+      
+      genes.forEach(gene => {
+        const statusClass = {
+          'retained': 'text-green-700 bg-green-50',
+          'changed': 'text-amber-700 bg-amber-50',
+          'missing': 'text-red-700 bg-red-50'
+        }[gene.status];
+
+        const statusIcon = {
+          'retained': 'check-circle',
+          'changed': 'alert-circle',
+          'missing': 'x-circle'
+        }[gene.status];
+
+        const confidenceClass = {
+          'green': 'bg-green-100 text-green-700',
+          'amber': 'bg-amber-100 text-amber-700',
+          'red': 'bg-red-100 text-red-700'
+        }[gene.confidence];
+
+        const geneRow = document.createElement('div');
+        geneRow.className = 'p-4';
+        geneRow.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium ${statusClass}">
+                <i data-lucide="${statusIcon}" class="h-3 w-3"></i>
+                ${gene.status}
+              </span>
+              <span class="font-mono font-semibold text-neutral-900">${gene.gene_symbol}</span>
+              <span class="inline-flex items-center rounded px-2 py-0.5 text-xs ${confidenceClass}">
+                ${gene.confidence.toUpperCase()}
+              </span>
+            </div>
+            <button class="expand-gene text-neutral-400 hover:text-neutral-600">
+              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+            </button>
+          </div>
+          <div class="gene-details hidden mt-3 pl-4 border-l-2 border-neutral-200 text-sm">
+            ${gene.current_version ? `
+              <div class="mb-2">
+                <p class="text-xs font-medium text-neutral-600 mb-1">Current Version:</p>
+                <p class="font-mono text-xs text-neutral-900">
+                  ${gene.current_version.ensembl_id} • 
+                  chr${gene.current_version.chromosome}:${gene.current_version.start.toLocaleString()}-${gene.current_version.end.toLocaleString()} (${gene.current_version.strand > 0 ? '+' : '-'})
+                </p>
+              </div>
+            ` : '<p class="text-xs text-neutral-500 mb-2">Not found in current version</p>'}
+            
+            ${gene.target_version ? `
+              <div>
+                <p class="text-xs font-medium text-neutral-600 mb-1">Target Version:</p>
+                <p class="font-mono text-xs text-neutral-900 ${gene.location_changed ? 'text-orange-600 font-semibold' : ''}">
+                  ${gene.target_version.ensembl_id} • 
+                  chr${gene.target_version.chromosome}:${gene.target_version.start.toLocaleString()}-${gene.target_version.end.toLocaleString()} (${gene.target_version.strand > 0 ? '+' : '-'})
+                  ${gene.location_changed ? ' ← Changed' : ''}
+                </p>
+              </div>
+            ` : '<p class="text-xs text-red-600 font-medium">Not found in target version</p>'}
+          </div>
+        `;
+        
+        geneList.appendChild(geneRow);
+
+        // Add expand/collapse handler
+        const expandButton = geneRow.querySelector('.expand-gene');
+        const details = geneRow.querySelector('.gene-details');
+        expandButton.addEventListener('click', () => {
+          details.classList.toggle('hidden');
+          const icon = expandButton.querySelector('i');
+          icon.setAttribute('data-lucide', details.classList.contains('hidden') ? 'chevron-down' : 'chevron-up');
+          renderIcons();
+        });
+      });
+
+      renderIcons();
+    }
+
+    // Load more genes
+    loadMoreButton.addEventListener('click', async () => {
+      loadMoreButton.disabled = true;
+      loadMoreButton.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>Loading...';
+      renderIcons();
+
+      try {
+        const response = await fetch('/api/analyze-panel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            panel_id: selectedPanel.id,
+            panel_version: selectedPanel.version,
+            current_ensembl_version: parseInt(document.getElementById('currentVersion').value),
+            target_ensembl_version: parseInt(document.getElementById('targetVersion').value),
+            offset: currentOffset,
+            limit: 30
+          })
+        });
+
+        const data = await response.json();
+        renderGenes(data.genes);
+        
+        currentOffset += 30;
+        document.getElementById('genesShowing').textContent = 
+          `Showing 1-${Math.min(currentOffset, data.total_genes)} of ${data.total_genes}`;
+        
+        // Hide load more if no more genes
+        if (!data.has_more) {
+          document.getElementById('loadMoreContainer').style.display = 'none';
+        }
+
+      } catch (error) {
+        console.error('Error loading more genes:', error);
+        alert('Failed to load more genes');
+      } finally {
+        loadMoreButton.disabled = false;
+        loadMoreButton.innerHTML = '<i data-lucide="chevron-down" class="h-4 w-4"></i>Load More Genes';
+        renderIcons();
+      }
+    });
+
+    // Back button
+    backButton.addEventListener('click', () => {
+      resultsView.classList.add('hidden');
+      selectionView.classList.remove('hidden');
+      document.getElementById('geneList').innerHTML = '';
+      currentOffset = 0;
+    });
+
+    // Export CSV
+    document.getElementById('exportButton').addEventListener('click', () => {
+      const currentVersion = document.getElementById('currentVersion').value;
+      const targetVersion = document.getElementById('targetVersion').value;
+      const url = `/api/export-panel-csv?panel_id=${selectedPanel.id}&current_version=${currentVersion}&target_version=${targetVersion}`;
+      window.location.href = url;
+    });
+
+    // Initialize
+    loadPanels();
+  </script>
+</body>
+</html>
+

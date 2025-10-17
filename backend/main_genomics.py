@@ -88,8 +88,10 @@ class PanelAnalysisRequest(BaseModel):
     """Request model for panel analysis"""
     panel_id: str
     panel_version: str
-    target_ensembl_version: int = Field(..., ge=107, le=120, description="Target Ensembl version to compare against")
-    max_genes: int = Field(default=None, description="Maximum number of genes to analyze (None = all)")
+    current_ensembl_version: int = Field(..., ge=100, le=120)
+    target_ensembl_version: int = Field(..., ge=100, le=120)
+    offset: int = Field(default=0, ge=0)
+    limit: int = Field(default=30, ge=1, le=50)
 
 
 class GenomicLocation(BaseModel):
@@ -110,9 +112,7 @@ class GeneComparison(BaseModel):
     location_changed: bool
     ensembl_id_retained: bool
     current_version: Optional[GenomicLocation] = None
-    current_ensembl_version: Optional[str] = None  # Version string from PanelApp (e.g., "90")
     target_version: Optional[GenomicLocation] = None
-    target_ensembl_version: int  # Target version number
     status: Literal["retained", "changed", "missing"]
 
 
@@ -130,6 +130,8 @@ class PanelAnalysisResponse(BaseModel):
     panel_name: str
     total_genes: int
     genes_analyzed: int
+    offset: int
+    has_more: bool
     summary: AnalysisSummary
     genes: List[GeneComparison]
 
@@ -201,26 +203,16 @@ class PanelAppClient:
             
             panels = []
             for panel_data in data.get("results", []):
-                # Check if panel is signed off by looking at types array
-                is_signed_off = any(
-                    panel_type.get("slug") == "gms-signed-off" 
-                    for panel_type in panel_data.get("types", [])
-                )
-                
                 # Filter for signed off versions if requested
-                if signed_off_only and not is_signed_off:
+                if signed_off_only and not panel_data.get("version_signed_off"):
                     continue
-                
-                # Get gene count from stats
-                stats = panel_data.get("stats", {})
-                gene_count = stats.get("number_of_genes", 0)
                 
                 panels.append(PanelInfo(
                     id=str(panel_data["id"]),
                     name=panel_data["name"],
                     version=str(panel_data["version"]),
-                    gene_count=gene_count,
-                    signed_off=is_signed_off
+                    gene_count=panel_data.get("number_of_genes", 0),
+                    signed_off=panel_data.get("version_signed_off", False)
                 ))
             
             return panels
@@ -248,18 +240,7 @@ class EnsemblClient:
         Args:
             version: Ensembl version number (e.g., 109). None for latest.
         """
-        # Map version numbers to correct archive subdomains
-        version_urls = {
-            107: "https://jul2022.rest.ensembl.org",
-            109: "https://feb2023.rest.ensembl.org",
-            110: "https://jul2023.rest.ensembl.org",
-            111: "https://jan2024.rest.ensembl.org",
-        }
-        
-        if version and version in version_urls:
-            self.base_url = version_urls[version]
-        elif version:
-            # Fallback for other versions
+        if version:
             self.base_url = f"https://e{version}.rest.ensembl.org"
         else:
             self.base_url = "https://rest.ensembl.org"
@@ -411,42 +392,10 @@ async def fetch_panel_genes(panel_id: str) -> str:
         else:
             color = "red"
         
-        gene_data = gene.get("gene_data", {})
-        symbol = gene_data.get("gene_symbol", "")
-        
-        # Extract Ensembl reference data from PanelApp (GRCh38 only)
-        ensembl_genes = gene_data.get("ensembl_genes", {})
-        grch38_data = ensembl_genes.get("GRch38", {})
-        
-        # Get the first available version from GRch38 data
-        current_ensembl_data = None
-        if grch38_data:
-            # Get any version key (e.g., "90", "107", etc.)
-            version_keys = list(grch38_data.keys())
-            if version_keys:
-                version_key = version_keys[0]  # Use first available version
-                version_data = grch38_data[version_key]
-                location_str = version_data.get("location", "")
-                ensembl_id = version_data.get("ensembl_id", "")
-                
-                # Parse location string (format: "CHR:START-END")
-                if location_str and ":" in location_str and "-" in location_str:
-                    chr_part, pos_part = location_str.split(":")
-                    start, end = pos_part.split("-")
-                    current_ensembl_data = {
-                        "ensembl_id": ensembl_id,
-                        "gene_symbol": symbol,
-                        "chromosome": chr_part,
-                        "start": int(start),
-                        "end": int(end),
-                        "strand": 1,  # PanelApp doesn't provide strand, default to 1
-                        "version": version_key
-                    }
-        
         gene_list.append({
-            "symbol": symbol,
-            "confidence": color,
-            "current_ensembl_data": current_ensembl_data
+            "symbol": gene.get("gene_data", {}).get("gene_symbol", ""),
+            "ensembl_id": gene.get("gene_data", {}).get("ensembl_id", ""),
+            "confidence": color
         })
     
     return json.dumps({
@@ -476,13 +425,7 @@ async def fetch_ensembl_gene(gene_symbol: str, ensembl_version: int) -> str:
     })
 
 
-def compare_gene_data(
-    current: Optional[GenomicLocation], 
-    target: Optional[GenomicLocation], 
-    confidence: str,
-    current_version_str: Optional[str] = None,
-    target_version_int: int = None
-) -> GeneComparison:
+def compare_gene_data(current: Optional[GenomicLocation], target: Optional[GenomicLocation], confidence: str) -> GeneComparison:
     """Compare gene data between versions"""
     if current is None and target is None:
         # Should not happen, but handle gracefully
@@ -492,8 +435,6 @@ def compare_gene_data(
             symbol_retained=False,
             location_changed=False,
             ensembl_id_retained=False,
-            current_ensembl_version=current_version_str,
-            target_ensembl_version=target_version_int,
             status="missing"
         )
     
@@ -506,9 +447,7 @@ def compare_gene_data(
             location_changed=False,
             ensembl_id_retained=False,
             current_version=None,
-            current_ensembl_version=current_version_str,
             target_version=target,
-            target_ensembl_version=target_version_int,
             status="changed"
         )
     
@@ -521,9 +460,7 @@ def compare_gene_data(
             location_changed=False,
             ensembl_id_retained=False,
             current_version=current,
-            current_ensembl_version=current_version_str,
             target_version=None,
-            target_ensembl_version=target_version_int,
             status="missing"
         )
     
@@ -549,9 +486,7 @@ def compare_gene_data(
         location_changed=location_changed,
         ensembl_id_retained=ensembl_id_retained,
         current_version=current,
-        current_ensembl_version=current_version_str,
         target_version=target,
-        target_ensembl_version=target_version_int,
         status=status
     )
 
@@ -576,34 +511,26 @@ async def panel_data_agent(state: PanelCheckState) -> PanelCheckState:
 
 
 async def current_ensembl_agent(state: PanelCheckState) -> PanelCheckState:
-    """Agent that extracts current Ensembl data from PanelApp"""
+    """Agent that fetches current Ensembl data"""
     request = state["panel_request"]
     panel_data = state["panel_data"]
+    current_version = request["current_ensembl_version"]
     
-    # Extract gene data (all genes or up to max_genes)
-    max_genes = request.get("max_genes")
-    genes = panel_data["genes"][:max_genes] if max_genes else panel_data["genes"]
+    client = EnsemblClient(version=current_version)
+    
+    # Fetch gene data for requested slice
+    offset = request.get("offset", 0)
+    limit = request.get("limit", 30)
+    genes = panel_data["genes"][offset:offset + limit]
     
     current_data = {}
     for gene in genes:
         symbol = gene["symbol"]
-        ensembl_data = gene.get("current_ensembl_data")
-        
-        if ensembl_data:
-            # Convert to GenomicLocation
-            current_data[symbol] = GenomicLocation(
-                ensembl_id=ensembl_data["ensembl_id"],
-                gene_symbol=ensembl_data["gene_symbol"],
-                chromosome=ensembl_data["chromosome"],
-                start=ensembl_data["start"],
-                end=ensembl_data["end"],
-                strand=ensembl_data["strand"]
-            )
-        else:
-            current_data[symbol] = None
+        gene_data = await client.lookup_gene_by_symbol(symbol)
+        current_data[symbol] = gene_data
     
     state["current_ensembl_data"] = current_data
-    state["messages"].append(HumanMessage(content=f"Extracted current Ensembl data from PanelApp for {len(current_data)} genes"))
+    state["messages"].append(HumanMessage(content=f"Fetched current Ensembl data for {len(current_data)} genes"))
     
     return state
 
@@ -616,9 +543,10 @@ async def target_ensembl_agent(state: PanelCheckState) -> PanelCheckState:
     
     client = EnsemblClient(version=target_version)
     
-    # Fetch gene data (all genes or up to max_genes)
-    max_genes = request.get("max_genes")
-    genes = panel_data["genes"][:max_genes] if max_genes else panel_data["genes"]
+    # Fetch gene data for requested slice
+    offset = request.get("offset", 0)
+    limit = request.get("limit", 30)
+    genes = panel_data["genes"][offset:offset + limit]
     
     target_data = {}
     for gene in genes:
@@ -639,28 +567,19 @@ async def comparison_agent(state: PanelCheckState) -> PanelCheckState:
     target_data = state["target_ensembl_data"]
     request = state["panel_request"]
     
-    # Compare all genes or up to max_genes
-    max_genes = request.get("max_genes")
-    genes = panel_data["genes"][:max_genes] if max_genes else panel_data["genes"]
-    target_version = request["target_ensembl_version"]
+    offset = request.get("offset", 0)
+    limit = request.get("limit", 30)
+    genes = panel_data["genes"][offset:offset + limit]
     
     comparisons = []
     for gene in genes:
         symbol = gene["symbol"]
         confidence = gene["confidence"]
-        current_ensembl_data = gene.get("current_ensembl_data")
-        current_version_str = current_ensembl_data.get("version") if current_ensembl_data else None
         
         current_gene = current_data.get(symbol)
         target_gene = target_data.get(symbol)
         
-        comparison = compare_gene_data(
-            current_gene, 
-            target_gene, 
-            confidence,
-            current_version_str,
-            target_version
-        )
+        comparison = compare_gene_data(current_gene, target_gene, confidence)
         comparisons.append(comparison)
     
     state["comparison_results"] = comparisons
@@ -707,11 +626,18 @@ def build_panel_check_graph():
     g.add_node("comparison", comparison_agent)
     g.add_node("synthesis", synthesis_agent)
     
-    # Sequential workflow to avoid concurrent state updates
+    # Panel data must complete first
     g.add_edge(START, "panel_data")
+    
+    # Current and target Ensembl agents run in parallel after panel data
     g.add_edge("panel_data", "current_ensembl")
-    g.add_edge("current_ensembl", "target_ensembl")
+    g.add_edge("panel_data", "target_ensembl")
+    
+    # Comparison waits for both Ensembl agents
+    g.add_edge("current_ensembl", "comparison")
     g.add_edge("target_ensembl", "comparison")
+    
+    # Synthesis is final step
     g.add_edge("comparison", "synthesis")
     g.add_edge("synthesis", END)
     
@@ -806,15 +732,18 @@ async def analyze_panel(request: PanelAnalysisRequest):
         summary_json = result["final_report"]
         summary = AnalysisSummary.model_validate_json(summary_json)
         
-        # Calculate totals
+        # Calculate pagination
         total_genes = len(panel_data["genes"])
         genes_analyzed = len(comparisons)
+        has_more = (request.offset + request.limit) < total_genes
         
         return PanelAnalysisResponse(
             panel_id=request.panel_id,
             panel_name=panel_data["panel_name"],
             total_genes=total_genes,
             genes_analyzed=genes_analyzed,
+            offset=request.offset,
+            has_more=has_more,
             summary=summary,
             genes=comparisons
         )
@@ -823,98 +752,36 @@ async def analyze_panel(request: PanelAnalysisRequest):
         raise HTTPException(status_code=500, detail=f"Error analyzing panel: {str(e)}")
 
 
-class CSVExportRequest(BaseModel):
-    """Request model for CSV export"""
-    panel_id: str
+@app.get("/api/export-panel-csv")
+async def export_panel_csv(
+    panel_id: str,
+    current_version: int,
     target_version: int
-    review_priorities: Dict[str, str] = Field(default_factory=dict, description="Gene symbol to review priority mapping")
-
-
-@app.post("/api/export-panel-csv")
-async def export_panel_csv(request: CSVExportRequest):
-    """Export panel analysis results to CSV including review priorities"""
-    try:
-        # Fetch all panel genes
-        client = PanelAppClient()
-        panel_data_json = await fetch_panel_genes.ainvoke({"panel_id": request.panel_id})
-        panel_data = json.loads(panel_data_json)
-        
-        # Fetch target Ensembl data
-        target_client = EnsemblClient(version=request.target_version)
-        
-        output = io.StringIO()
-        writer = csv.writer(output)
-        
-        # Write header (added Review Priority column)
-        writer.writerow([
-            "Gene Symbol", "Confidence", "Review Priority", "Symbol Retained", "Location Changed",
-            "Ensembl ID Retained", "Status",
-            "Current Ensembl ID", "Current Chromosome", "Current Start", "Current End", "Current Strand", "Current Version",
-            "Target Ensembl ID", "Target Chromosome", "Target Start", "Target End", "Target Strand"
-        ])
-        
-        # Process each gene
-        for gene in panel_data["genes"]:
-            symbol = gene["symbol"]
-            confidence = gene["confidence"]
-            ensembl_data = gene.get("current_ensembl_data")
-            
-            # Get current data from PanelApp
-            current_gene = None
-            if ensembl_data:
-                current_gene = GenomicLocation(
-                    ensembl_id=ensembl_data["ensembl_id"],
-                    gene_symbol=ensembl_data["gene_symbol"],
-                    chromosome=ensembl_data["chromosome"],
-                    start=ensembl_data["start"],
-                    end=ensembl_data["end"],
-                    strand=ensembl_data["strand"]
-                )
-            
-            # Fetch target data from Ensembl
-            target_gene = await target_client.lookup_gene_by_symbol(symbol)
-            
-            # Compare
-            current_version_number = ensembl_data.get("version") if ensembl_data else None
-            comparison = compare_gene_data(current_gene, target_gene, confidence, current_version_number, request.target_version)
-            
-            # Get review priority
-            review_priority = request.review_priorities.get(symbol, "Not Set")
-            
-            # Write row (added review_priority)
-            current_version_display = ensembl_data.get("version", "N/A") if ensembl_data else "N/A"
-            writer.writerow([
-                comparison.gene_symbol,
-                comparison.confidence,
-                review_priority,
-                "Yes" if comparison.symbol_retained else "No",
-                "Yes" if comparison.location_changed else "No",
-                "Yes" if comparison.ensembl_id_retained else "No",
-                comparison.status.upper(),
-                comparison.current_version.ensembl_id if comparison.current_version else "N/A",
-                comparison.current_version.chromosome if comparison.current_version else "N/A",
-                comparison.current_version.start if comparison.current_version else "N/A",
-                comparison.current_version.end if comparison.current_version else "N/A",
-                comparison.current_version.strand if comparison.current_version else "N/A",
-                current_version_display,
-                comparison.target_version.ensembl_id if comparison.target_version else "N/A",
-                comparison.target_version.chromosome if comparison.target_version else "N/A",
-                comparison.target_version.start if comparison.target_version else "N/A",
-                comparison.target_version.end if comparison.target_version else "N/A",
-                comparison.target_version.strand if comparison.target_version else "N/A"
-            ])
-        
-        output.seek(0)
-        filename = f"PanelChecker_{request.panel_id}_to_v{request.target_version}_{datetime.now().strftime('%Y%m%d')}.csv"
-        
-        return StreamingResponse(
-            iter([output.getvalue()]),
-            media_type="text/csv",
-            headers={"Content-Disposition": f"attachment; filename={filename}"}
-        )
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error exporting CSV: {str(e)}")
+):
+    """Export panel analysis results to CSV"""
+    # TODO: Implement full CSV export
+    # For now, return a placeholder
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    writer.writerow([
+        "Gene Symbol", "Confidence", "Symbol Retained", "Location Changed",
+        "Current Ensembl ID", "Target Ensembl ID",
+        "Current Chr", "Target Chr",
+        "Current Start", "Target Start",
+        "Current End", "Target End",
+        "Current Strand", "Target Strand",
+        "Status"
+    ])
+    
+    output.seek(0)
+    filename = f"PanelChecker_{panel_id}_{current_version}_vs_{target_version}_{datetime.now().strftime('%Y%m%d')}.csv"
+    
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
 
 
 if __name__ == "__main__":
