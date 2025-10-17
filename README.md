@@ -1,4 +1,4 @@
-# AI Trip Planner
+# PanelChecker
 
 A **production-ready multi-agent system** built for learning and customization. This repo demonstrates three essential AI engineering patterns that students can study, modify, and adapt for their own use cases.
 
@@ -8,7 +8,7 @@ A **production-ready multi-agent system** built for learning and customization. 
 - 🔍 **RAG (Retrieval-Augmented Generation)**: Vector search over curated data with fallback strategies
 - 🌐 **API Integration**: Real-time web search with graceful degradation (LLM fallback)
 - 📊 **Observability**: Production tracing with Arize for debugging and evaluation
-- 🛠️ **Composable Architecture**: Easily adapt from "trip planner" to your own agent system
+- 🛠️ **Composable Architecture**: Easily adapt from "panel checker" to your own agent system
 
 **Perfect for:** Students learning to build, evaluate, and deploy agentic AI systems.
 
@@ -139,6 +139,8 @@ Students have successfully adapted this codebase for:
   - Reviews PRs for architectural concerns
 
 **💡 Your Turn**: Use Cursor AI to help you adapt this system for your domain!
+
+> **Note**: This project was adapted from the AI Trip Planner template to create PanelChecker.
 
 ## Quickstart
 

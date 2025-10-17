@@ -800,7 +800,7 @@ def serve_frontend():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy", "service": "ai-trip-planner"}
+    return {"status": "healthy", "service": "panel-checker"}
 
 
 # Initialize tracing once at startup, not per request
@@ -809,7 +809,7 @@ if _TRACING:
         space_id = os.getenv("ARIZE_SPACE_ID")
         api_key = os.getenv("ARIZE_API_KEY")
         if space_id and api_key:
-            tp = register(space_id=space_id, api_key=api_key, project_name="ai-trip-planner")
+            tp = register(space_id=space_id, api_key=api_key, project_name="panel-checker")
             LangChainInstrumentor().instrument(tracer_provider=tp, include_chains=True, include_agents=True, include_tools=True)
             LiteLLMInstrumentor().instrument(tracer_provider=tp, skip_dep_check=True)
     except Exception:
